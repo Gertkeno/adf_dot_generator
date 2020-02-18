@@ -52,7 +52,7 @@ int main (int argc, char ** argv)
 			{
 			case '#':
 				{
-					const auto name {to_lower (make_safe (line.substr (1)))};
+					const auto name {make_safe (line.substr (1))};
 					writingTo = &gData [name];
 					writingTo->name = name;
 					break;
@@ -65,7 +65,7 @@ int main (int argc, char ** argv)
 						break;
 
 					const auto fn {to_lower (line.substr (1, p-1))};
-					const auto ft {to_lower (make_safe (line.substr (p+1)))};
+					const auto ft {make_safe (line.substr (p+1))};
 
 					if (fn == "link" or fn == "tag" or fn == "linkto")
 					{
