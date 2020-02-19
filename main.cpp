@@ -86,7 +86,7 @@ int main (int argc, char ** argv)
 	// create graph
 	// use cout?
 
-	auto block {[] (const std::string & n, std::list <std::string> & p, const std::string & add)
+	auto block {[] (const std::string & n, const std::list <std::string> & p, const std::string & add)
 	{
 		if (p.size() == 1)
 		{
@@ -103,7 +103,6 @@ int main (int argc, char ** argv)
 			for (auto & link : p)
 			{
 				std::cout << link << " ";
-				//std::cout << i.first << " -> " << link << ";\n";
 			}
 
 			if (add.length() > 0)
@@ -116,6 +115,12 @@ int main (int argc, char ** argv)
 	std::cout << "digraph chapter_view {\n";
 	for (auto & i : gData)
 	{
+		if (i.second.links.size() == 0 and i.second.breakTos.size() == 0)
+		{
+			std::cout << i.first << ";\n";
+			continue;
+		}
+
 		block (i.first, i.second.links, "");
 		block (i.first, i.second.breakTos, "color=blue");
 	}
