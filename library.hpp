@@ -47,7 +47,7 @@ inline std::string make_safe (std::string in)
 
 	std::transform (in.begin(), in.end(), in.begin(), [] (char c)
 	{
-		if (std::isspace (c))
+		if (not std::isalnum (c))
 			return '_';
 		return c;
 	});

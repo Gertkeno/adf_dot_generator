@@ -52,7 +52,8 @@ int main (int argc, char ** argv)
 			{
 			case '#':
 				{
-					const auto name {make_safe (line.substr (1))};
+					const auto preceedingMarks (line.find_first_not_of ('#'));
+					const auto name {make_safe (line.substr (preceedingMarks))};
 					writingTo = &gData [name];
 					writingTo->name = name;
 					break;
