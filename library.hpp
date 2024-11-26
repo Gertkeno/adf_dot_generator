@@ -1,32 +1,30 @@
 #pragma once
+#include <cctype>
+#include <string>
+#include <string_view>
 
-inline std::string trim_front_whitespace (const std::string & in)
+
+inline std::string_view trim_whitespace (std::string_view in)
 {
-	unsigned index {0};
-	while (index < in.length() and std::isspace (in [index]))
-		++index;
+	auto start = in.cbegin();
+	auto end = in.cend();
 
-	if (index >= in.length() or index == 0)
-		return in;
+	while (start != end) {
+		if (!std::isspace(*start)) {
+			break;
+		}
+		start++;
+	}
 
-	return in.substr (index);
-}
+	while (end != start) {
+		if (!std::isspace(*end)) {
+			break;
+		}
+		end--;
+	}
 
-inline std::string trim_back_whitespace (const std::string & in)
-{
-	long unsigned index {in.length()-1};
-	while (index != 0 and std::isspace (in [index]))
-		--index;
-
-	if (index >= in.length()-1 or index == 0)
-		return in;
-
-	return in.substr (0, index+1);
-}
-
-inline std::string trim_whitespace (const std::string & in)
-{
-	return trim_back_whitespace (trim_front_whitespace (in));
+	const auto len = end - start;
+	return std::string_view(start, len);
 }
 
 inline void to_lower_inline (std::string & in)
@@ -40,17 +38,34 @@ inline std::string to_lower (std::string in)
 	return in;
 }
 
-inline std::string make_safe (std::string in)
+inline std::string make_safe (std::string_view in)
 {
-	in = trim_whitespace (in);
-	to_lower_inline (in);
+	std::string a (trim_whitespace (in));
+	to_lower_inline (a);
 
-	std::transform (in.begin(), in.end(), in.begin(), [] (char c)
+	std::transform (a.begin(), a.end(), a.begin(), [] (char c)
 	{
 		if (not std::isalnum (c))
 			return '_';
 		return c;
 	});
 
-	return in;
+	return a;
+}
+
+bool cmp_lower(std::string_view lhs, std::string_view rhs)
+{
+	if (lhs.length() != rhs.length())
+	{
+		return false;
+	}
+
+	for(size_t i = 0; i < lhs.length(); i++)
+	{
+		if (std::tolower(lhs[i]) != rhs[i])
+		{
+			return false;
+		}
+	}
+	return true;
 }
