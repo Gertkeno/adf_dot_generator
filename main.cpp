@@ -25,8 +25,6 @@ static Chapter gData;
 // mayhap just write a dotfile for sfdp
 int main (int argc, char ** argv)
 {
-	Page start;
-
 	if (argc <= 1)
 	{
 		std::cerr << "Error! Need input file" << std::endl;
